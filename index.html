@@ -16,11 +16,14 @@
   </body>
 
   <script src="js/viewport.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/primitives/envelope.js"></script>
   <script src="js/graphEditor.js"></script>
   <script src="js/math/graph.js"></script>
   <script src="js/math/utils.js"></script>
   <script src="js/primitives/point.js"></script>
   <script src="js/primitives/segment.js"></script>
+  <script src="js/primitives/polygon.js"></script>
 
   <script>
     // console.log(controls);
@@ -81,6 +84,7 @@
 
     const graph = graphInfo ? Graph.load(graphInfo) : new Graph();
 
+    const world = new World(graph);
     // Graph Editors
     const viewport = new Viewport(myCanvas);
     const graphEditor = new GraphEditor(viewport, graph);
@@ -91,11 +95,15 @@
     function animate() {
       viewport.reset();
       graphEditor.display();
+      world.generate();
+      world.draw(ctx);
+
       requestAnimationFrame(animate);
     }
 
     function dispose() {
       graphEditor.dispose();
+      localStorage.removeItem("graph");
     }
 
     function save() {
